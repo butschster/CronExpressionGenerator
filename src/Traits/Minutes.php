@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
@@ -52,7 +53,7 @@ trait Minutes
         return $this->minutes(0, 30);
     }
 
-    public function minutes(string|int ...$minutes): self
+    public function minutes(string | int ...$minutes): self
     {
         $expression = clone $this->expression;
         $expression->setPart(CronExpression::MINUTE, implode(',', $minutes));

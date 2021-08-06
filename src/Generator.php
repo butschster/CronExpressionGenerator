@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Butschster\CronExpression;
@@ -13,12 +14,12 @@ use Cron\CronExpression;
 
 class Generator
 {
-    use Minutes,
-        Hours,
-        Days,
-        Weeks,
-        Months,
-        Years;
+    use Minutes;
+    use Hours;
+    use Days;
+    use Weeks;
+    use Months;
+    use Years;
 
     public const SUNDAY = 0;
     public const MONDAY = 1;

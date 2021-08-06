@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
@@ -41,7 +42,7 @@ trait Hours
             ->hours('*/6');
     }
 
-    public function hours(string|int ...$hours): self
+    public function hours(string | int ...$hours): self
     {
         $expression = clone $this->expression;
         $expression->setPart(CronExpression::HOUR, implode(',', $hours));

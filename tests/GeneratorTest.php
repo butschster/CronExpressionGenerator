@@ -134,9 +134,10 @@ class GeneratorTest extends TestCase
         $this->assertSame('8 15 5 4 *', $this->generator->yearlyOn(4, 5, 15, 8)->getExpression());
     }
 
-    function testMixedExpression()
+    public function testMixedExpression()
     {
-        $this->assertSame('* */2 5,10,15,20,25,30 3,6,9,12 1,3,5,0',
+        $this->assertSame(
+            '* */2 5,10,15,20,25,30 3,6,9,12 1,3,5,0',
             (string) $this->generator
                 ->yearly()
                 ->months(3, 6, 9, 12)

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
@@ -7,7 +8,7 @@ use Cron\CronExpression;
 
 trait Months
 {
-    public function daysOfMonth(string|int ...$days): self
+    public function daysOfMonth(string | int ...$days): self
     {
         $days = $days ?: [1];
 

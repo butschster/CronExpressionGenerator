@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
@@ -7,7 +8,7 @@ use Cron\CronExpression;
 
 trait Weeks
 {
-    public function daysOfWeek(string|int...$dayOfWeek): self
+    public function daysOfWeek(string | int...$dayOfWeek): self
     {
         $expression = clone $this->expression;
         $expression->setPart(CronExpression::WEEKDAY, implode(',', $dayOfWeek));
