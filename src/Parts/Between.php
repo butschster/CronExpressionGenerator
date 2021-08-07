@@ -6,7 +6,6 @@ namespace Butschster\CronExpression\Parts;
 
 use Butschster\CronExpression\PartValueInterface;
 use Cron\CronExpression;
-use Webmozart\Assert\Assert;
 
 abstract class Between implements PartValueInterface
 {

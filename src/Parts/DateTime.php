@@ -24,7 +24,7 @@ class DateTime implements PartValueInterface
             new SpecificMinutes((int)$this->time->format('i')),
             new SpecificHours((int)$this->time->format('G')),
             new SpecificDays((int)$this->time->format('j')),
-            new SpecificMonths((int)$this->time->format('n'))
+            new SpecificMonths((int)$this->time->format('n')),
         ];
 
         foreach ($parts as $part) {
