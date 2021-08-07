@@ -297,6 +297,36 @@ echo $generator
     ->everyMinute();
 ```
 
+### Gets next run date
+See: https://github.com/dragonmantank/cron-expression#usage
+
+```php
+echo $generator->monthlyOn(15, 12)->getExpression()->getNextRunDate(); // DateTime
+```
+
+## Using with laravel
+
+```php
+<?php
+
+namespace App\Console;
+
+use Butschster\CronExpression\Generator;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
+
+class Kernel extends ConsoleKernel
+{
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('emails:send Taylor --force')->cron(
+            Generator::create()->daily()
+        );
+    }
+}
+```
+
 ## Testing
 
 ```bash

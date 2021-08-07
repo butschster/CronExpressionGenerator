@@ -53,9 +53,4 @@ class Expression extends CronExpression
 
         return $expression;
     }
-
-    public function __toString(): string
-    {
-        return (string) $this->getExpression();
-    }
 }
