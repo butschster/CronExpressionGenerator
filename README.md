@@ -82,21 +82,14 @@ echo $generator->everyFifteenMinutes(); // */15 * * * *
 echo $generator->everyThirtyMinutes(); // 0,30 * * * *
 
 // Every minute
-echo $generator->minutes('*'); // * * * * *
+echo $generator->set(new \Butschster\CronExpression\Parts\Minutes\EveryMinute()); // * * * * *
+echo $generator->set(new \Butschster\CronExpression\Parts\Minutes\EveryMinute(2)); // * */2 * * *
 
-// Every ten minutes
-echo $generator->minutes('*/10'); // */10 * * * *
+// Specific minutes
+echo $generator->set(new \Butschster\CronExpression\Parts\Minutes\SpecificMinutes(2, 3, 10)); // * 2,3,10 * * *
 
-// Every hh:10, hh:11, ..., hh:30 minutes
-echo $generator->minutes('10-30'); // 10-30 * * * *
-
-// Hourly at hh:01
-echo $generator->minutes(1); // 1 * * * *
-
-// Hourly at hh:05, hh:10, hh:15
-echo $generator->minutes(5, 10, 15, ...); // 5,10,15,... * * * *
-
-echo $generator->minutes(61); // Throws an exception: Invalid CRON field value 61 at position 0
+// Between minutes
+echo $generator->set(new \Butschster\CronExpression\Parts\Minutes\BetweenMinutes(0, 30)); // * 0-30 * * *
 ```
 
 ### Manipulate hours
@@ -122,13 +115,15 @@ echo $generator->everyFourHours(); // 0 */4 * * *
 // Every six hours
 echo $generator->everySixHours(); // 0 */6 * * *
 
-// Every 1, 2, 3 hours at 15 minutes
-echo $generator->hourlyAt(15)->hours(1, 2, 3); // 15 */3 * * *
+// Every 1, 2, 3 hours
+echo $generator->set(new \Butschster\CronExpression\Parts\Hours\SpecificHours(1, 2, 3)); // * 1,2,3 * * *
 
 // Every three hours
-echo $generator->hours('*/3'); // * */3 * * *
+echo $generator->set(new \Butschster\CronExpression\Parts\Hours\EveryHour()); // * * * * *
+echo $generator->set(new \Butschster\CronExpression\Parts\Hours\EveryHour(3)); // * */3 * * *
 
-echo $generator->hours(25); // Throws an exception: Invalid CRON field value 25 at position 1
+// Between hours
+echo $generator->set(new \Butschster\CronExpression\Parts\Hours\BetweenHours(0, 12)); // * 0-12 * * *
 ```
 
 ### Manipulate days
@@ -153,6 +148,38 @@ echo $generator->twiceDaily(3, 15); // 0 3,15 * * *
 
 // Every day at 03:05, 15:05
 echo $generator->twiceDailyAt(3, 15, 5); // 5 3,15 * * *
+
+// Every month on the last day at 00:00
+echo $generator->lastDayOfMonth(); // 0 0 L * *
+
+// Every month on the last day at 12:00
+echo $generator->lastDayOfMonth(12); // 0 12 L * *
+
+// Every month on the last day at 12:30
+echo $generator->lastDayOfMonth(12, 30); // 30 12 L * *
+
+// Every month on the last weekday at 00:00
+echo $generator->lastWeekdayOfMonth(); // 0 0 LW * *
+
+// Every month on the last weekday at 12:00
+echo $generator->lastWeekdayOfMonth(12); // 0 12 LW * *
+
+// Every month on the last weekday at 12:30
+echo $generator->lastWeekdayOfMonth(12, 30); // 30 12 LW * *
+
+// Every 1, 2, 3 days
+echo $generator->set(new \Butschster\CronExpression\Parts\Days\SpecificDays(1, 2, 3)); // * * 1,2,3 * *
+
+echo $generator->set(new \Butschster\CronExpression\Parts\Days\EveryDay()); // * * * * *
+
+// Every three days
+echo $generator->set(new \Butschster\CronExpression\Parts\Days\EveryDay(3)); // * * */3 * *
+
+// Between days
+echo $generator->set(new \Butschster\CronExpression\Parts\Days\BetweenDays(0, 12)); // * * 0-12 * *
+
+// Last day of month
+echo $generator->set(new \Butschster\CronExpression\Parts\Days\LastDayOfMonth()); // * * L * *
 ```
 
 ### Manipulate days of week
@@ -214,6 +241,31 @@ echo $generator->weeklyOn(Generator::MONDAY, 8); // 0 8 * * 1
 
 // Every monday at 08:06
 echo $generator->weeklyOn(Generator::MONDAY, 8, 6); // 6 8 * * 1
+
+// Every day of a week
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\EveryDaysOfWeek()); // * * * * *
+
+// Every two days of a week
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\EveryDaysOfWeek(2)); // * * * * */2
+
+
+// Every Monday,Wednesday, Friday
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\SpecificDaysOfWeek(Generator::MONDAY, Generator::WEDNESDAY, Generator::FRIDAY)); // * * * * 1,3,5
+
+// Between days of a week
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\BetweenDayOfWeek(Generator::MONDAY, Generator::FRIDAY)); // * * * * 1-5
+
+// Last monday of a week
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\LastDayOwWeek()); // * * * * 1L
+
+// Last friday of a week
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\LastDayOwWeek(Generator::FRIDAY)); // * * * * 5L
+
+// Every first monday of every month
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\NthDayOfWeek()); // * * * * 1#1
+
+// Every third friday of every month
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\NthDayOfWeek(Generator::FRIDAY, 3)); // * * * * 5#3
 ```
 
 ### Manipulate months
@@ -245,19 +297,6 @@ echo $generator->twiceMonthly(15, 24, 10, 30); // 30 10 15,24 * *
 // Every month three times on 12, 24, 30 day at 10:345
 echo $generator->dailyAt(10, 45)->daysOfMonth(12, 24, 30); // 45 10 12,24,30 * *
 
-// Every month on the last day at 00:00
-echo $generator->lastDayOfMonth(); // 0 0 31 * *
-
-// Every month on the last day at 12:00
-echo $generator->lastDayOfMonth(12); // 0 12 31 * *
-
-// Every month on the last day at 12:30
-echo $generator->lastDayOfMonth(12, 30); // 30 12 31 * *
-
-// Every month on the last day at specific date
-$date = new DateTime('2021-02-05');
-echo $generator->lastDayOfMonth(12, 30, $date); // 30 12 28 * *
-
 // Every quarter yyyy-01,03,06,09-01 00:00
 echo $generator->quarterly(); // 0 0 1 1-12/3 *
 
@@ -275,6 +314,21 @@ echo $generator->yearlyOn(Generator::APR, 5, 8); // 0 8 5 4 *
 
 // Every year yyyy-04-05 08:30
 echo $generator->yearlyOn(Generator::APR, 5, 8, 30); // 30 8 5 4 *
+
+// Every month
+echo $generator->set(new \Butschster\CronExpression\Parts\Months\EveryMonth()); // * * * * *
+
+// Every two months
+echo $generator->set(new \Butschster\CronExpression\Parts\Months\EveryMonth(2)); // * * * */2 *
+
+// Specific months: april and december
+echo $generator->set(new \Butschster\CronExpression\Parts\Months\SpecificMonths(Generator::APR, Generator::DEC)); // * * * 4,12 *
+
+// Between april and december
+echo $generator->set(new \Butschster\CronExpression\Parts\Months\BetweenMonths(Generator::APR, Generator::DEC)); // * * * 4-12 *
+
+// Quarterly
+echo $generator->set(new \Butschster\CronExpression\Parts\Months\Quarterly()); // * * * 1-12/3 *
 ```
 
 ### Specific time
@@ -283,11 +337,21 @@ $date = new DateTime('2021-02-05 12:34:26');
 
 // Every year yyyy-02-05 12:34
 echo $generator->on($date); // 34 12 5 2 *
+// or
+echo $generator->set(new \Butschster\CronExpression\Parts\DateTime($date)); // 34 12 5 2 *
 ```
 
 ### Custom expression
+
 ```php
+use Butschster\CronExpression\Parts\Days\SpecificDays;
+use Butschster\CronExpression\Parts\DaysOfWeek\SpecificDaysOfWeek;
+use Butschster\CronExpression\Parts\Hours\EveryHour;
+use Butschster\CronExpression\Parts\Minutes\EveryMinute;
+use Butschster\CronExpression\Parts\Months\SpecificMonths;
+
 // * */2 5,10,15,20,25,30 3,6,9,12 1,3,5,0
+
 echo $generator
     ->yearly()
     ->months(Generator::MAR, Generator::JUN, Generator::SEP, Generator::DEC)
@@ -295,6 +359,17 @@ echo $generator
     ->daysOfWeek(Generator::MONDAY, Generator::WEDNESDAY, Generator::FRIDAY, Generator::SUNDAY)
     ->everyTwoHours()
     ->everyMinute();
+
+// or
+
+echo $generator
+    ->set(
+        new SpecificMonths(Generator::MAR, Generator::JUN, Generator::SEP, Generator::DEC),
+        new SpecificDays(5, 10, 15, 20, 25, 30),
+        new SpecificDaysOfWeek(Generator::MONDAY, Generator::WEDNESDAY, Generator::FRIDAY, Generator::SUNDAY),
+        new EveryHour(2),
+        new EveryMinute()
+    );
 ```
 
 ### Gets next run date
@@ -325,6 +400,66 @@ class Kernel extends ConsoleKernel
         );
     }
 }
+```
+
+## Create custom expressions
+To create a custom expression class you need implement `Butschster\CronExpression\PartValueInterface`
+
+#### Example 1
+```php
+use Butschster\CronExpression\PartValueInterface;
+use Cron\CronExpression;
+
+class Quarterly implements PartValueInterface
+{
+    public function updateExpression(CronExpression $expression): void
+    {
+        $expression->setPart(CronExpression::MONTH, '1-12/3');
+    }
+}
+```
+
+Using
+```php
+echo \Butschster\CronExpression\Generator::create()->set(new Quarterly()); // * * * 1-12/3 *
+```
+
+#### Example 2
+
+```php
+use Butschster\CronExpression\Parts\Days\SpecificDays;
+use Butschster\CronExpression\Parts\Hours\SpecificHours;
+use Butschster\CronExpression\Parts\Minutes\SpecificMinutes;
+use Butschster\CronExpression\Parts\Months\SpecificMonths;
+use Butschster\CronExpression\PartValueInterface;
+use Cron\CronExpression;
+use DateTimeInterface;
+
+class DateTime implements PartValueInterface
+{
+    public function __construct(private DateTimeInterface $time)
+    {
+    }
+
+    public function updateExpression(CronExpression $expression): void
+    {
+        $parts = [
+            new SpecificMinutes((int)$this->time->format('i')),
+            new SpecificHours((int)$this->time->format('G')),
+            new SpecificDays((int)$this->time->format('j')),
+            new SpecificMonths((int)$this->time->format('n'))
+        ];
+
+        foreach ($parts as $part) {
+            $part->updateExpression($expression);
+        }
+    }
+}
+```
+
+Using
+```php
+echo \Butschster\CronExpression\Generator::create()->set(new DateTime(new \DateTime('2021-02-05 12:34:26'))); // 34 12 5 2 *
 ```
 
 ## Testing

@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
+use Butschster\CronExpression\Parts\Months\Quarterly;
+use Butschster\CronExpression\Parts\Months\SpecificMonths;
+
 trait Years
 {
-    public function months(string | int ...$months): self
+    public function months(int ...$months): self
     {
-        return self::create(
-            $this->expression->months(...$months)
-        );
+        $months = $months ?: [self::JAN];
+
+        return $this->set(new SpecificMonths(...$months));
     }
 
     public function quarterly(): self
     {
-        return $this->monthly()
-            ->months('1-12/3');
+        return $this->monthly()->set(new Quarterly());
     }
 
     public function yearly(int ...$months): self
     {
-        return $this->monthly()
-            ->months(...$months);
+        return $this->monthly()->months(...$months);
     }
 
     public function yearlyOn(int $month = self::JAN, int $dayOfMonth = 1, int $hour = 0, int $minute = 0): self

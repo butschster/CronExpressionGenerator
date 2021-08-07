@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
+use Butschster\CronExpression\Parts\Days\LastDayOfMonth;
+use Butschster\CronExpression\Parts\Days\LastWeekday;
+use Butschster\CronExpression\Parts\Hours\SpecificHours;
+use Butschster\CronExpression\Parts\Minutes\SpecificMinutes;
+
 trait Days
 {
     public function daily(int ...$hours): self
     {
-        $hours = $hours ? implode(',', $hours) : 0;
+        $hours = $hours ?: [0];
 
-        return $this->minutes(0)
-            ->hours($hours);
+        return $this->hourly()->set(new SpecificHours(...$hours));
     }
 
     public function dailyAt(int $hour, int $minute = 0): self
     {
-        return $this->minutes($minute)
-            ->hours($hour);
+        return $this->set(
+            new SpecificMinutes($minute),
+            new SpecificHours($hour)
+        );
     }
 
     public function twiceDaily($first = 1, $second = 13): self
@@ -27,7 +33,17 @@ trait Days
 
     public function twiceDailyAt($first = 1, $second = 13, $minute = 0): self
     {
-        return $this->daily($first, $second)
-            ->minutes($minute);
+        return $this->daily($first, $second)->set(new SpecificMinutes($minute));
+    }
+
+    public function lastDayOfMonth(int $hour = 0, int $minute = 0): self
+    {
+        return $this->dailyAt($hour, $minute)->set(new LastDayOfMonth());
+    }
+
+    public function lastWeekdayOfMonth(int $hour = 0, int $minute = 0): self
+    {
+        return $this->dailyAt($hour, $minute)
+            ->set(new LastWeekday());
     }
 }

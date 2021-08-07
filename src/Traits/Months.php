@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
-use DateTime;
-use DateTimeInterface;
+use Butschster\CronExpression\Parts\Days\SpecificDays;
+use Butschster\CronExpression\Parts\DaysOfWeek\LastDayOwWeek;
+use Butschster\CronExpression\Parts\DaysOfWeek\NthDayOfWeek;
 
 trait Months
 {
-    public function daysOfMonth(string | int ...$days): self
+    public function daysOfMonth(int ...$days): self
     {
-        return self::create(
-            $this->expression->daysOfMonth(...$days)
-        );
+        return $this->set(new SpecificDays(...$days));
     }
 
     public function monthly(int $hour = 0, int $minute = 0): self
@@ -35,11 +34,13 @@ trait Months
             ->daysOfMonth($first, $second);
     }
 
-    public function lastDayOfMonth(int $hour = 0, int $minute = 0, ?DateTimeInterface $time = null): self
+    public function lastDayOfWeekEveryMonth(int $dayOfWeek = self::MONDAY, int $hour = 0, int $minute = 0): self
     {
-        $time = $time ?? new DateTime();
+        return $this->dailyAt($hour, $minute)->set(new LastDayOwWeek($dayOfWeek));
+    }
 
-        return $this->dailyAt($hour, $minute)
-            ->daysOfMonth((int)$time->format('t'));
+    public function nthDayOfWeekEveryMonth(int $dayOfWeek = self::MONDAY, int $nth = 1, int $hour = 0, int $minute = 0): self
+    {
+        return $this->dailyAt($hour, $minute)->set(new NthDayOfWeek($dayOfWeek, $nth));
     }
 }

@@ -5,6 +5,15 @@ declare(strict_types=1);
 namespace Butschster\CronExpression\Tests;
 
 use Butschster\CronExpression\Generator;
+use Butschster\CronExpression\Parts\Days\SpecificDays;
+use Butschster\CronExpression\Parts\DaysOfWeek\SpecificDaysOfWeek;
+use Butschster\CronExpression\Parts\Hours\BetweenHours;
+use Butschster\CronExpression\Parts\Hours\EveryHour;
+use Butschster\CronExpression\Parts\Hours\SpecificHours;
+use Butschster\CronExpression\Parts\Minutes\BetweenMinutes;
+use Butschster\CronExpression\Parts\Minutes\EveryMinute;
+use Butschster\CronExpression\Parts\Minutes\SpecificMinutes;
+use Butschster\CronExpression\Parts\Months\SpecificMonths;
 use DateTime;
 use InvalidArgumentException;
 
@@ -39,9 +48,9 @@ class GeneratorTest extends TestCase
 
     public function testSetsMinutes()
     {
-        $this->assertExpression('15,30,45 * * * *', $this->generator->minutes(15, 30, 45));
-        $this->assertExpression('*/3 * * * *', $this->generator->minutes('*/3'));
-        $this->assertExpression('10-30 * * * *', $this->generator->minutes('10-30'));
+        $this->assertExpression('15,30,45 * * * *', $this->generator->set(new SpecificMinutes(15, 30, 45)));
+        $this->assertExpression('*/3 * * * *', $this->generator->set(new EveryMinute(3)));
+        $this->assertExpression('10-30 * * * *', $this->generator->set(new BetweenMinutes(10, 30)));
     }
 
     public function testInvalidMinutesShouldThrowAnException()
@@ -49,7 +58,7 @@ class GeneratorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectErrorMessage('Invalid CRON field value 61 at position 0');
 
-        $this->generator->minutes(61);
+        $this->generator->set(new SpecificMinutes(61));
     }
 
     public function testHourly()
@@ -74,10 +83,11 @@ class GeneratorTest extends TestCase
 
     public function testSetsHours()
     {
-        $this->assertExpression('* 1,2,3 * * *', $this->generator->hours(1, 2, 3));
-        $this->assertExpression('* */3 * * *', $this->generator->hours('*/3'));
+        $this->assertExpression('* 1,2,3 * * *', $this->generator->set(new SpecificHours(1, 2, 3)));
+        $this->assertExpression('* */3 * * *', $this->generator->set(new EveryHour(3)));
+        $this->assertExpression('* 3-6 * * *', $this->generator->set(new BetweenHours(3, 6)));
 
-        $this->assertExpression('15 1,2,3 * * *', $this->generator->hourlyAt(15)->hours(1, 2, 3));
+        $this->assertExpression('15 1,2,3 * * *', $this->generator->hourlyAt(15)->set(new SpecificHours(1, 2, 3)));
     }
 
     public function testInvalidHoursShouldThrowAnException()
@@ -85,7 +95,7 @@ class GeneratorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectErrorMessage('Invalid CRON field value 25 at position 1');
 
-        $this->generator->hours(25);
+        $this->generator->set(new SpecificHours(25));
     }
 
     public function testDaily()
@@ -190,12 +200,31 @@ class GeneratorTest extends TestCase
 
     public function testLastDayOfMonth()
     {
-        $currentDate = new DateTime();
-        $this->assertExpression('0 0 ' . $currentDate->format('t') . ' * *', $this->generator->lastDayOfMonth());
-        $this->assertExpression('31 12 ' . $currentDate->format('t') . ' * *', $this->generator->lastDayOfMonth(12, 31));
+        $this->assertExpression('0 0 L * *', $this->generator->lastDayOfMonth());
+        $this->assertExpression('31 12 L * *', $this->generator->lastDayOfMonth(12, 31));
+    }
 
-        $date = new DateTime('2021-02-05');
-        $this->assertExpression('31 12 28 * *', $this->generator->lastDayOfMonth(12, 31, $date));
+    public function testLastWeekdayOfMonth()
+    {
+        $this->assertExpression('0 0 LW * *', $this->generator->lastWeekdayOfMonth());
+        $this->assertExpression('31 12 LW * *', $this->generator->lastWeekdayOfMonth(12, 31));
+    }
+
+    public function testLastDayOfWeekEveryMonth()
+    {
+        $this->assertExpression('0 0 * * 1L', $this->generator->lastDayOfWeekEveryMonth());
+        $this->assertExpression('0 0 * * 5L', $this->generator->lastDayOfWeekEveryMonth(Generator::FRIDAY));
+        $this->assertExpression('0 12 * * 5L', $this->generator->lastDayOfWeekEveryMonth(Generator::FRIDAY, 12));
+        $this->assertExpression('30 12 * * 5L', $this->generator->lastDayOfWeekEveryMonth(Generator::FRIDAY, 12, 30));
+    }
+
+    public function testNthDayOfWeekEveryMonth()
+    {
+        $this->assertExpression('0 0 * * 1#1', $this->generator->nthDayOfWeekEveryMonth());
+        $this->assertExpression('0 0 * * 5#1', $this->generator->nthDayOfWeekEveryMonth(Generator::FRIDAY));
+        $this->assertExpression('0 0 * * 5#3', $this->generator->nthDayOfWeekEveryMonth(Generator::FRIDAY, 3));
+        $this->assertExpression('0 12 * * 5#3', $this->generator->nthDayOfWeekEveryMonth(Generator::FRIDAY, 3, 12));
+        $this->assertExpression('39 12 * * 5#3', $this->generator->nthDayOfWeekEveryMonth(Generator::FRIDAY, 3, 12, 39));
     }
 
     public function testQuarterly()
@@ -239,6 +268,21 @@ class GeneratorTest extends TestCase
                 ->daysOfWeek(Generator::MONDAY, Generator::WEDNESDAY, Generator::FRIDAY, Generator::SUNDAY)
                 ->everyTwoHours()
                 ->everyMinute()
+        );
+    }
+
+    public function testMixedExpressionFromParts()
+    {
+        $this->assertExpression(
+            '* */2 5,10,15,20,25,30 3,6,9,12 1,3,5,0',
+            $this->generator
+                ->set(
+                    new SpecificMonths(Generator::MAR, Generator::JUN, Generator::SEP, Generator::DEC),
+                    new SpecificDays(5, 10, 15, 20, 25, 30),
+                    new SpecificDaysOfWeek(Generator::MONDAY, Generator::WEDNESDAY, Generator::FRIDAY, Generator::SUNDAY),
+                    new EveryHour(2),
+                    new EveryMinute()
+                )
         );
     }
 }

@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
+use Butschster\CronExpression\Parts\DaysOfWeek\BetweenDayOfWeek;
+use Butschster\CronExpression\Parts\DaysOfWeek\SpecificDaysOfWeek;
+
 trait Weeks
 {
-    public function daysOfWeek(string | int...$dayOfWeek): self
+    public function daysOfWeek(int...$dayOfWeek): self
     {
-        return self::create(
-            $this->expression->daysOfWeek(...$dayOfWeek)
-        );
+        return $this->set(new SpecificDaysOfWeek(...$dayOfWeek));
     }
 
     public function weekly(int ...$dayOfWeek): self
     {
         $dayOfWeek = $dayOfWeek ?: [0];
 
-        return $this->daily()
-            ->daysOfWeek(...$dayOfWeek);
+        return $this->daily()->daysOfWeek(...$dayOfWeek);
     }
 
     public function weekdays(): self
     {
-        return $this->daysOfWeek(self::MONDAY . '-' . self::FRIDAY);
+        return $this->set(new BetweenDayOfWeek(self::MONDAY, self::FRIDAY));
     }
 
     public function weekends(): self
     {
-        return $this->daysOfWeek(self::SATURDAY . ',' . self::SUNDAY);
+        return $this->daysOfWeek(self::SATURDAY, self::SUNDAY);
     }
 
     public function mondays(): self

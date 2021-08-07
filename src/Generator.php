@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression;
 
+use Butschster\CronExpression\Parts\DateTime;
 use Butschster\CronExpression\Traits\Days;
 use Butschster\CronExpression\Traits\Hours;
 use Butschster\CronExpression\Traits\Minutes;
@@ -45,35 +46,42 @@ class Generator
 
     private const DEFAULT = '* * * * *';
 
-    private Expression $expression;
+    private CronExpression $expression;
 
-    public static function create(?Expression $expression = null): self
+    public static function create(?CronExpression $expression = null): self
     {
         return new self($expression);
     }
 
-    public function __construct(?Expression $expression = null)
+    public function __construct(?CronExpression $expression = null)
     {
-        $this->expression = $expression ?? new Expression(self::DEFAULT);
+        $this->expression = $expression ?? new CronExpression(self::DEFAULT);
     }
 
     public function cron(string $expression): self
     {
-        return self::create(new Expression($expression));
+        return self::create(new CronExpression($expression));
+    }
+
+    public function set(PartValueInterface ...$values): self
+    {
+        $expression = clone $this->expression;
+
+        foreach ($values as $value) {
+            $value->updateExpression($expression);
+        }
+
+        return new self($expression);
     }
 
     public function on(DateTimeInterface $time): self
     {
-        return $this
-            ->minutes((int) $time->format('i'))
-            ->hours($time->format('G'))
-            ->daysOfMonth($time->format('j'))
-            ->months($time->format('n'));
+        return $this->set(new DateTime($time));
     }
 
     public function __toString(): string
     {
-        return (string) $this->toExpression();
+        return $this->toExpression();
     }
 
     public function toExpression(): string
@@ -81,7 +89,7 @@ class Generator
         return $this->getExpression()->getExpression();
     }
 
-    public function setExpresion(Expression $expression): self
+    public function setExpresion(CronExpression $expression): self
     {
         $this->expression = $expression;
 

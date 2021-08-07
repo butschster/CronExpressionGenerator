@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
+use Butschster\CronExpression\Parts\Minutes\EveryMinute;
+use Butschster\CronExpression\Parts\Minutes\SpecificMinutes;
+
 trait Minutes
 {
-    public function everyMinute(): self
+    public function everyMinute(?int $minute = null): self
     {
-        return $this->minutes('*');
+        return $this->set(new EveryMinute($minute));
     }
 
     public function everyEvenMinute(): self
@@ -18,43 +21,36 @@ trait Minutes
 
     public function everyTwoMinutes(): self
     {
-        return $this->minutes('*/2');
+        return $this->everyMinute(2);
     }
 
     public function everyThreeMinutes(): self
     {
-        return $this->minutes('*/3');
+        return $this->everyMinute(3);
     }
 
     public function everyFourMinutes(): self
     {
-        return $this->minutes('*/4');
+        return $this->everyMinute(4);
     }
 
     public function everyFiveMinutes(): self
     {
-        return $this->minutes('*/5');
+        return $this->everyMinute(5);
     }
 
     public function everyTenMinutes(): self
     {
-        return $this->minutes('*/10');
+        return $this->everyMinute(10);
     }
 
     public function everyFifteenMinutes(): self
     {
-        return $this->minutes('*/15');
+        return $this->everyMinute(15);
     }
 
     public function everyThirtyMinutes(): self
     {
-        return $this->minutes(0, 30);
-    }
-
-    public function minutes(string | int ...$minutes): self
-    {
-        return self::create(
-            $this->expression->minutes(...$minutes)
-        );
+        return $this->set(new SpecificMinutes(0, 30));
     }
 }
