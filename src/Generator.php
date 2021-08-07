@@ -84,6 +84,7 @@ class Generator
     public function setExpresion(Expression $expression): self
     {
         $this->expression = $expression;
+
         return $this;
     }
 
