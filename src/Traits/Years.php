@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
-use Cron\CronExpression;
-
 trait Years
 {
     public function months(string | int ...$months): self

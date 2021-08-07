@@ -74,10 +74,10 @@ class GeneratorTest extends TestCase
 
     public function testSetsHours()
     {
-        $this->assertExpression('* 1,2,3 * * *', $this->generator->hours(1,2,3));
+        $this->assertExpression('* 1,2,3 * * *', $this->generator->hours(1, 2, 3));
         $this->assertExpression('* */3 * * *', $this->generator->hours('*/3'));
 
-        $this->assertExpression('15 1,2,3 * * *', $this->generator->hourlyAt(15)->hours(1,2,3));
+        $this->assertExpression('15 1,2,3 * * *', $this->generator->hourlyAt(15)->hours(1, 2, 3));
     }
 
     public function testInvalidHoursShouldThrowAnException()
