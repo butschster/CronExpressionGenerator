@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
-use Cron\CronExpression;
-
 trait Hours
 {
     public function hourly(): self
@@ -44,9 +42,8 @@ trait Hours
 
     public function hours(string | int ...$hours): self
     {
-        $expression = clone $this->expression;
-        $expression->setPart(CronExpression::HOUR, implode(',', $hours));
-
-        return self::create($expression);
+        return self::create(
+            $this->expression->hours(...$hours)
+        );
     }
 }

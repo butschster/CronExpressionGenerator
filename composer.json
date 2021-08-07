@@ -2,7 +2,7 @@
     "name": "butschster/cron-expression-generator",
     "description": "Cron expression generator",
     "keywords": [
-        "cron"
+        "cron", "php8", "generator"
     ],
     "license": "MIT",
     "authors": [

@@ -11,6 +11,7 @@ use Butschster\CronExpression\Traits\Months;
 use Butschster\CronExpression\Traits\Weeks;
 use Butschster\CronExpression\Traits\Years;
 use Cron\CronExpression;
+use DateTimeInterface;
 
 class Generator
 {
@@ -44,25 +45,50 @@ class Generator
 
     private const DEFAULT = '* * * * *';
 
-    private CronExpression $expression;
+    private Expression $expression;
 
-    public static function create(?CronExpression $expression = null): self
+    public static function create(?Expression $expression = null): self
     {
         return new self($expression);
     }
 
-    public function __construct(?CronExpression $expression = null)
+    public function __construct(?Expression $expression = null)
     {
-        $this->expression = $expression ?? new CronExpression(self::DEFAULT);
+        $this->expression = $expression ?? new Expression(self::DEFAULT);
+    }
+
+    public function cron(string $expression): self
+    {
+        return self::create(new Expression($expression));
+    }
+
+    public function on(DateTimeInterface $time): self
+    {
+        return $this
+            ->minutes((int) $time->format('i'))
+            ->hours($time->format('G'))
+            ->daysOfMonth($time->format('j'))
+            ->months($time->format('n'));
     }
 
     public function __toString(): string
     {
-        return $this->getExpression();
+        return (string) $this->toExpression();
     }
 
-    public function getExpression(): string
+    public function toExpression(): string
     {
-        return (string)$this->expression->getExpression();
+        return $this->getExpression()->getExpression();
+    }
+
+    public function setExpresion(Expression $expression): self
+    {
+        $this->expression = $expression;
+        return $this;
+    }
+
+    public function getExpression(): CronExpression
+    {
+        return $this->expression;
     }
 }

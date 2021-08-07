@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
-use Cron\CronExpression;
+use DateTime;
+use DateTimeInterface;
 
 trait Months
 {
     public function daysOfMonth(string | int ...$days): self
     {
-        $days = $days ?: [1];
-
-        $expression = clone $this->expression;
-        $expression->setPart(CronExpression::DAY, implode(',', $days));
-
-        return self::create($expression);
+        return self::create(
+            $this->expression->daysOfMonth(...$days)
+        );
     }
 
     public function monthly(int $hour = 0, int $minute = 0): self
     {
-        return $this->dailyAt($hour, $minute)
-            ->daysOfMonth(1);
+        return $this->monthlyOn(1, $hour, $minute);
     }
 
     public function monthlyOn(int $dayOfMonth = 1, int $hour = 0, int $minute = 0): self
@@ -38,11 +35,11 @@ trait Months
             ->daysOfMonth($first, $second);
     }
 
-    public function lastDayOfMonth(int $hour = 0, int $minute = 0): self
+    public function lastDayOfMonth(int $hour = 0, int $minute = 0, ?DateTimeInterface $time = null): self
     {
-        $lastDay = new \DateTime();
+        $time = $time ?? new DateTime();
 
         return $this->dailyAt($hour, $minute)
-            ->daysOfMonth((int)$lastDay->format('t'));
+            ->daysOfMonth((int)$time->format('t'));
     }
 }

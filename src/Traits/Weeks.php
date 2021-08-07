@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
-use Cron\CronExpression;
-
 trait Weeks
 {
     public function daysOfWeek(string | int...$dayOfWeek): self
     {
-        $expression = clone $this->expression;
-        $expression->setPart(CronExpression::WEEKDAY, implode(',', $dayOfWeek));
-
-        return self::create($expression);
+        return self::create(
+            $this->expression->daysOfWeek(...$dayOfWeek)
+        );
     }
 
     public function weekly(int ...$dayOfWeek): self

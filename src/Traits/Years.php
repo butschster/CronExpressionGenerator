@@ -10,12 +10,9 @@ trait Years
 {
     public function months(string | int ...$months): self
     {
-        $months = $months ?: [self::JAN];
-
-        $expression = clone $this->expression;
-        $expression->setPart(CronExpression::MONTH, implode(',', $months));
-
-        return self::create($expression);
+        return self::create(
+            $this->expression->months(...$months)
+        );
     }
 
     public function quarterly(): self

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Butschster\CronExpression\Traits;
 
-use Cron\CronExpression;
-
 trait Minutes
 {
     public function everyMinute(): self
@@ -55,9 +53,8 @@ trait Minutes
 
     public function minutes(string | int ...$minutes): self
     {
-        $expression = clone $this->expression;
-        $expression->setPart(CronExpression::MINUTE, implode(',', $minutes));
-
-        return self::create($expression);
+        return self::create(
+            $this->expression->minutes(...$minutes)
+        );
     }
 }
