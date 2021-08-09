@@ -4,8 +4,8 @@ Cron expression generator is a beautiful tool for PHP applications. Of course, t
 
 [![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dbutschster%26type%3Dpatrons&style=flat)](https://patreon.com/butschster)
 [![Latest Version on Packagist](https://poser.pugx.org/butschster/cron-expression-generator/v/stable)](https://packagist.org/packages/butschster/cron-expression-generator)
-[![GitHub Tests Action Status](https://github.com/butschster/CronExpressionGenerator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/butschster/cron-expression-generator/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://github.com/butschster/CronExpressionGenerator/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/butschster/cron-expression-generator/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![GitHub Tests Action Status](https://github.com/butschster/CronExpressionGenerator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/butschster/CronExpressionGenerator/actions?query=workflow%3ATests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://github.com/butschster/CronExpressionGenerator/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/butschster/CronExpressionGenerator/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/butschster/cron-expression-generator.svg?style=flat-square)](https://packagist.org/packages/butschster/cron-expression-generator)
 
 ![Cron expresssion](https://user-images.githubusercontent.com/773481/128696168-2021b8eb-7433-4dde-ba85-5848ef02bdfa.jpg)
