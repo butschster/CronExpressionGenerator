@@ -8,7 +8,7 @@ use Butschster\CronExpression\Generator;
 use Butschster\CronExpression\PartValueInterface;
 use Cron\CronExpression;
 
-class LastDayOwWeek implements PartValueInterface
+class LastDayOfWeek implements PartValueInterface
 {
     public function __construct(private int $dayOfWeek = Generator::MONDAY)
     {

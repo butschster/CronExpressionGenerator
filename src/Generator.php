@@ -86,10 +86,10 @@ class Generator
 
     public function toExpression(): string
     {
-        return $this->getExpression()->getExpression();
+        return (string) $this->getExpression()->getExpression();
     }
 
-    public function setExpresion(CronExpression $expression): self
+    public function setExpression(CronExpression $expression): self
     {
         $this->expression = $expression;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Butschster\CronExpression\Traits;
 
 use Butschster\CronExpression\Parts\Days\SpecificDays;
-use Butschster\CronExpression\Parts\DaysOfWeek\LastDayOwWeek;
+use Butschster\CronExpression\Parts\DaysOfWeek\LastDayOfWeek;
 use Butschster\CronExpression\Parts\DaysOfWeek\NthDayOfWeek;
 
 trait Months
@@ -36,7 +36,7 @@ trait Months
 
     public function lastDayOfWeekEveryMonth(int $dayOfWeek = self::MONDAY, int $hour = 0, int $minute = 0): self
     {
-        return $this->dailyAt($hour, $minute)->set(new LastDayOwWeek($dayOfWeek));
+        return $this->dailyAt($hour, $minute)->set(new LastDayOfWeek($dayOfWeek));
     }
 
     public function nthDayOfWeekEveryMonth(int $dayOfWeek = self::MONDAY, int $nth = 1, int $hour = 0, int $minute = 0): self

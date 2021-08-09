@@ -202,6 +202,7 @@ echo $generator->set(new \Butschster\CronExpression\Parts\Days\LastDayOfMonth())
 ```
 
 ### Manipulate days of week
+
 ```php
 // Every week on monday
 echo $generator->weekly(); // 0 0 * * 0
@@ -262,10 +263,10 @@ echo $generator->weeklyOn(Generator::MONDAY, 8); // 0 8 * * 1
 echo $generator->weeklyOn(Generator::MONDAY, 8, 6); // 6 8 * * 1
 
 // Every day of a week
-echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\EveryDaysOfWeek()); // * * * * *
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\EveryDayOfWeek()); // * * * * *
 
 // Every two days of a week
-echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\EveryDaysOfWeek(2)); // * * * * */2
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\EveryDayOfWeek(2)); // * * * * */2
 
 
 // Every Monday,Wednesday, Friday
@@ -275,10 +276,10 @@ echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\SpecificDay
 echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\BetweenDayOfWeek(Generator::MONDAY, Generator::FRIDAY)); // * * * * 1-5
 
 // Last monday of a week
-echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\LastDayOwWeek()); // * * * * 1L
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\LastDayOfWeek()); // * * * * 1L
 
 // Last friday of a week
-echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\LastDayOwWeek(Generator::FRIDAY)); // * * * * 5L
+echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\LastDayOfWeek(Generator::FRIDAY)); // * * * * 5L
 
 // Every first monday of every month
 echo $generator->set(new \Butschster\CronExpression\Parts\DaysOfWeek\NthDayOfWeek()); // * * * * 1#1

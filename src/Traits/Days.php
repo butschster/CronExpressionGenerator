@@ -26,12 +26,12 @@ trait Days
         );
     }
 
-    public function twiceDaily($first = 1, $second = 13): self
+    public function twiceDaily(int $first = 1, int $second = 13): self
     {
         return $this->daily($first, $second);
     }
 
-    public function twiceDailyAt($first = 1, $second = 13, $minute = 0): self
+    public function twiceDailyAt(int $first = 1, int $second = 13, int $minute = 0): self
     {
         return $this->daily($first, $second)->set(new SpecificMinutes($minute));
     }
