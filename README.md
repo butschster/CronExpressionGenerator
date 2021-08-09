@@ -1,4 +1,4 @@
-# The most powerful and extendable tool for Cron expression generator
+# The most powerful and extendable tool for Cron expression generation
 
 Cron expression generator is a beautiful tool for PHP applications. Of course, the primary feature of this package is the ability to generate cron expressions.
 
