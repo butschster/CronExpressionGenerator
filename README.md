@@ -12,8 +12,8 @@ Cron expression generator is a beautiful tool for PHP applications. Of course, t
 
 ## Features
 - Cron expressions generator
-- Pre built templates
-- Custom templates
+- Pre built expressions
+- Custom expressions
 - Well documented
 - Well tested
 - Compatible with Laravel
