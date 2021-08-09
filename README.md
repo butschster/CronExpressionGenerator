@@ -1,10 +1,27 @@
-# Cron expression generator
+# The most powerful and extendable tool for Cron expression generator
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/butschster/cron-expression-generator.svg?style=flat-square)](https://packagist.org/packages/butschster/cron-expression-generator)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/butschster/cron-expression-generator/run-tests?label=tests)](https://github.com/butschster/cron-expression-generator/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/butschster/cron-expression-generator/Check%20&%20fix%20styling?label=code%20style)](https://github.com/butschster/cron-expression-generator/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+Cron expression generator is a beautiful tool for PHP applications. Of course, the primary feature of this package is the ability to generate cron expressions.
+
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dbutschster%26type%3Dpatrons&style=flat)](https://patreon.com/butschster)
+[![Latest Version on Packagist](https://poser.pugx.org/butschster/cron-expression-generator/v/stable)](https://packagist.org/packages/butschster/cron-expression-generator)
+[![GitHub Tests Action Status](https://github.com/butschster/CronExpressionGenerator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/butschster/cron-expression-generator/actions?query=workflow%3ATests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://github.com/butschster/CronExpressionGenerator/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/butschster/cron-expression-generator/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/butschster/cron-expression-generator.svg?style=flat-square)](https://packagist.org/packages/butschster/cron-expression-generator)
 
+![Cron expresssion](https://user-images.githubusercontent.com/773481/128696168-2021b8eb-7433-4dde-ba85-5848ef02bdfa.jpg)
+
+## Features
+- Cron expressions generator
+- Pre built templates
+- Custom templates
+- Well documented
+- Well tested
+- Compatible with Laravel
+
+
+### Requirements
+- PHP 8.0 and above
+- 
 ## Installation
 
 You can install the package via composer:
@@ -13,20 +30,22 @@ You can install the package via composer:
 composer require butschster/cron-expression-generator
 ```
 
+That's it!
+
 ## Usage
 
 ### Creates a new generator
 ```php
 use Butschster\CronExpression\Generator;
-use Butschster\CronExpression\Expression;
+use Cron\CronExpression;
 
 $generator = new Generator();
 // or
-$generator = new Generator(new Expression('* * * * *'));
+$generator = new Generator(new CronExpression('* * * * *'));
 // or
 $generator = Generator::create();
 // or
-$generator = Generator::create(new Expression('* * * * *'));
+$generator = Generator::create(new CronExpression('* * * * *'));
 ```
 
 ### Gets expression object
